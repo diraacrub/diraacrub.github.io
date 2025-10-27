@@ -4,36 +4,206 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentación: Departamento Docente CRUB-UNCO</title>
-    <!-- Carga de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Estilos CSS Vanilla (sin Tailwind) -->
     <style>
-        /* Estilo para la fuente Inter, que es la predeterminada de Tailwind */
+        /* Importación de la fuente */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Reset básico y estilos del body */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+            color: #1f2937; /* text-gray-900 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
         }
-        /* Clase para listas anidadas */
-        .list-circle {
+
+        /* Contenedor principal de la diapositiva */
+        .slide-container {
+            position: relative;
+            width: 100%;
+            max-width: 1152px; /* max-w-5xl */
+            aspect-ratio: 16 / 9;
+            background-color: #ffffff; /* bg-white */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+            overflow: hidden;
+        }
+
+        /* Estilo base de cada diapositiva */
+        .slide {
+            position: absolute;
+            inset: 0;
+            padding: 3rem; /* p-12 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Clase de utilidad para ocultar diapositivas (usada por JS) */
+        .hidden {
+            display: none;
+        }
+        
+        /* Diapositivas centradas (Título y Cierre) */
+        .slide-centered {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* --- Estilos de Texto --- */
+
+        /* Título de la Portada (Slide 1) */
+        .slide-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #1e40af; /* text-blue-800 */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        /* Subtítulo de la Portada (Slide 1) */
+        .slide-subtitle {
+            font-size: 1.5rem; /* text-2xl */
+            color: #4b5563; /* text-gray-600 */
+        }
+
+        /* Encabezado de diapositiva de contenido (Slides 2-11) */
+        .slide-header {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 600; /* font-semibold */
+            color: #1d4ed8; /* text-blue-700 */
+            margin: 0 0 1.5rem 0; /* mb-6 */
+            padding-bottom: 0.5rem; /* pb-2 */
+            border-bottom: 2px solid #bfdbfe; /* border-b-2 border-blue-200 */
+        }
+        
+        /* Encabezado de diapositiva de cierre (Slide 12) */
+        .slide-closer {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #1e40af; /* text-blue-800 */
+            margin-bottom: 2rem; /* mb-8 */
+        }
+        /* Texto de diapositiva de cierre (Slide 12) */
+        .slide-closer-text {
+            font-size: 1.5rem; /* text-2xl */
+            color: #4b5563; /* text-gray-600 */
+        }
+
+
+        /* Listas de contenido */
+        .slide-content {
+            list-style-position: inside;
+            list-style-type: disc;
+            font-size: 1.25rem; /* text-xl */
+            padding: 0;
+            margin: 0;
+        }
+
+        .slide-content li {
+            margin-bottom: 1rem; /* space-y-4 */
+        }
+        
+        /* Estilos para listas anidadas */
+        .slide-content ul {
             list-style-type: circle;
+            list-style-position: inside;
+            margin-left: 2rem; /* ml-8 */
+            margin-top: 0.5rem; /* mt-2 */
+            font-size: 1rem; /* text-base */
+            color: #374151; /* text-gray-700 */
         }
+        
+        .slide-content ul li {
+            margin-bottom: 0.5rem; /* space-y-2 */
+        }
+        
+        /* Slide 10 usa un color de texto ligeramente más oscuro */
+        .slide-content-darker {
+             color: #1f2937; /* text-gray-800 */
+        }
+
+
+        /* --- Navegación --- */
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1152px; /* max-w-5xl */
+            margin-top: 1rem; /* mt-4 */
+        }
+
+        .navigation button {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: #ffffff; /* text-white */
+            font-weight: 500; /* font-medium */
+            padding: 0.5rem 1rem; /* py-2 px-4 */
+            border: none;
+            border-radius: 0.5rem; /* rounded-lg */
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .navigation button:hover {
+            background-color: #1d4ed8; /* hover:bg-blue-700 */
+        }
+
+        .navigation button:disabled {
+            background-color: #9ca3af; /* disabled:bg-gray-400 */
+            cursor: not-allowed;
+        }
+
+        #slide-counter {
+            color: #4b5563; /* text-gray-600 */
+            font-weight: 500; /* font-medium */
+            font-size: 0.875rem; /* text-sm */
+        }
+        
+        /* --- Responsive (para pantallas 'md' y mayores) --- */
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+            }
+            
+            .slide-title, .slide-closer {
+                font-size: 3rem; /* md:text-5xl */
+            }
+            .slide-subtitle, .slide-closer-text {
+                font-size: 1.875rem; /* md:text-3xl */
+            }
+            
+            .slide-content {
+                font-size: 1.5rem; /* md:text-2xl */
+            }
+            
+            .slide-content ul {
+                 font-size: 1.125rem; /* md:text-lg */
+            }
+        }
+        
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4 md:p-8 text-gray-900">
+<body>
 
-    <!-- Contenedor principal de la presentación (simula la diapositiva) -->
-    <!-- Mantiene una relación de aspecto de 16:9 -->
-    <div class="relative w-full max-w-5xl aspect-video bg-white rounded-lg shadow-2xl overflow-hidden">
+    <!-- Contenedor principal de la presentación -->
+    <div class="slide-container">
 
         <!-- Diapositiva 1: Título -->
-        <div class="slide absolute inset-0 p-12 flex flex-col justify-center items-center text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">Departamento Docente CRUB-UNCO</h1>
-            <p class="text-2xl md:text-3xl text-gray-600">Historia, Misiones y Evolución</p>
+        <div class="slide slide-centered">
+            <h1 class="slide-title">Departamento Docente CRUB-UNCO</h1>
+            <p class="slide-subtitle">Historia, Misiones y Evolución</p>
         </div>
 
         <!-- Diapositiva 2: Origen y Creación -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Origen y Creación</h2>
-            <ul class="list-disc list-inside space-y-4 text-xl md:text-2xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">Origen y Creación</h2>
+            <ul class="slide-content">
                 <li><strong>Marco Normativo:</strong> Creado por la Estructura Orgánico-Funcional (Ordenanza Nº 440/1999).</li>
                 <li><strong>Objetivo Inicial:</strong> Ordenar funciones administrativas y jerarquizar cargos del tramo superior.</li>
                 <li><strong>Definición de Tareas:</strong> Las misiones y funciones se establecen formalmente en la Resolución Rec- Nº 0720/2000.</li>
@@ -41,13 +211,13 @@
         </div>
 
         <!-- Diapositiva 3: El Punto de Partida (Funciones) -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">El Punto de Partida: Misiones Fundamentales (Res. 720/2000)</h2>
-            <ul class="list-disc list-inside space-y-3 text-lg md:text-xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">El Punto de Partida: Misiones Fundamentales (Res. 720/2000)</h2>
+            <ul class="slide-content">
                 <li><strong>Contexto Previo:</strong> Antes del Dpto., las funciones (concursos) dependían de la Secretaría Académica.</li>
                 <li><strong>Primer Concurso (Año 2000):</strong> Se concursa la Jefatura y comienza la centralización de tareas.</li>
                 <li><strong>Funciones Clave Asignadas:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-base md:text-lg text-gray-700">
+                    <ul>
                         <li>Gestión de designación del personal docente.</li>
                         <li>Administración integral de Concursos Docentes.</li>
                         <li>Confección y actualización de Legajos.</li>
@@ -60,12 +230,12 @@
         </div>
 
         <!-- Diapositiva 4: Crecimiento y Evolución (Nuevas Demandas) -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Crecimiento y Evolución: Adaptación a Nuevas Demandas</h2>
-            <ul class="list-disc list-inside space-y-4 text-xl md:text-2xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">Crecimiento y Evolución: Adaptación a Nuevas Demandas</h2>
+            <ul class="slide-content">
                 <li>Las funciones de la Res. 720/2000 son una base, pero la realidad actual es más compleja.</li>
                 <li><strong>Impulsores de Cambio:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li>Dinámica institucional y político-histórica.</li>
                         <li>Implementación del Convenio Colectivo de Trabajo Docente (CCTD).</li>
                         <li>Desarrollo de la Carrera Docente.</li>
@@ -76,12 +246,12 @@
         </div>
         
         <!-- Diapositiva 5: La Transformación Digital -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Crecimiento y Evolución: La Transformación Digital</h2>
-            <ul class="list-disc list-inside space-y-4 text-xl md:text-2xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">Crecimiento y Evolución: La Transformación Digital</h2>
+            <ul class="slide-content">
                  <li>La tecnología modificó los circuitos de información y trabajo.</li>
                  <li><strong>Hitos Clave:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-3 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li><strong>2015:</strong> Implementación del Sistema Mocoví (Designaciones docentes).</li>
                         <li><strong>2021:</strong> Implementación del Sistema de Expedientes SUDOCU.</li>
                     </ul>
@@ -91,12 +261,12 @@
         </div>
 
         <!-- Diapositiva 6: El Departamento en la Estructura (Vínculos) -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">El Departamento en la Estructura Organizativa</h2>
-            <ul class="list-disc list-inside space-y-3 text-lg md:text-xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">El Departamento en la Estructura Organizativa</h2>
+            <ul class="slide-content">
                 <li><strong>Dependencia Administrativa:</strong> Dirección de Administración Académica.</li>
                 <li><strong>Vínculos Internos (CRUB):</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-base md:text-lg text-gray-700">
+                    <ul>
                         <li>Secretaría Académica</li>
                         <li>Secretaría de Consejo Directivo</li>
                         <li>Departamento de Recursos Humanos</li>
@@ -109,12 +279,12 @@
         </div>
 
         <!-- Diapositiva 7: Más Allá de la Administración -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">El Alcance del Trabajo: Más Allá de la Administración</h2>
-            <ul class="list-disc list-inside space-y-4 text-xl md:text-2xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">El Alcance del Trabajo: Más Allá de la Administración</h2>
+            <ul class="slide-content">
                 <li>El trabajo no es solo gestionar cargos; se articula con la vida académica integral del docente.</li>
                 <li><strong>Visión Holística:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li>Formación profesional y trayectoria.</li>
                         <li>Desempeño en Investigación y Extensión.</li>
                         <li>Actividad académica de Grado y Postgrado.</li>
@@ -125,12 +295,12 @@
         </div>
 
         <!-- Diapositiva 8: Procesos Actuales: Hacia la Virtualización -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Avances Recientes: Hacia la Virtualización</h2>
-            <ul class="list-disc list-inside space-y-4 text-xl md:text-2xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">Avances Recientes: Hacia la Virtualización</h2>
+            <ul class="slide-content">
                 <li><strong>Hito Histórico:</strong> La pandemia (2019) aceleró los cambios y la "virtualización de procesos".</li>
                 <li><strong>Reducción de la Presencialidad:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li>Concursos (publicación, inscripción, consultas, sorteos) se realizan por plataformas.</li>
                         <li>La presencialidad se reduce (principalmente) a la instancia evaluativa.</li>
                     </ul>
@@ -140,17 +310,17 @@
         </div>
 
         <!-- Diapositiva 9: Estructura y Ritmo de Trabajo -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Estructura Interna y Ritmo de Trabajo</h2>
-            <ul class="list-disc list-inside space-y-3 text-lg md:text-xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">Estructura Interna y Ritmo de Trabajo</h2>
+            <ul class="slide-content">
                 <li><strong>Estructura Actual:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-base md:text-lg text-gray-700">
+                    <ul>
                         <li>Una (1) División: Administración de Concursos.</li>
                         <li>Un (1) Área: Colaboración general (legajos, notificaciones, archivo, etc.).</li>
                     </ul>
                 </li>
                 <li><strong>Ritmo de Trabajo:</strong>
-                     <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-base md:text-lg text-gray-700">
+                     <ul>
                         <li><strong>Planificado:</strong> Designaciones anuales, concursos.</li>
                         <li><strong>A Demanda:</strong> Movimientos del plantel (licencias, bajas).</li>
                     </ul>
@@ -161,9 +331,9 @@
         </div>
 
         <!-- Diapositiva 10: Perfil Clave (Jefatura) -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Perfil Requerido: Jefatura del Departamento</h2>
-            <ul class="list-disc list-inside space-y-3 text-lg md:text-xl text-gray-800">
+        <div class="slide hidden">
+            <h2 class="slide-header">Perfil Requerido: Jefatura del Departamento</h2>
+            <ul class="slide-content slide-content-darker">
                 <li>Visión institucional e inserción.</li>
                 <li>Interacción eficiente y empática.</li>
                 <li>Criterio organizacional (planificación y demanda).</li>
@@ -175,22 +345,22 @@
         </div>
 
         <!-- Diapositiva 11: Desafíos y Funciones a Desarrollar -->
-        <div class="slide absolute inset-0 p-12 flex flex-col hidden">
-            <h2 class="text-3xl font-semibold text-blue-700 mb-6 border-b-2 border-blue-200 pb-2">Desafíos y Funciones a Desarrollar</h2>
-            <ul class="list-disc list-inside space-y-4 text-xl md:text-2xl">
+        <div class="slide hidden">
+            <h2 class="slide-header">Desafíos y Funciones a Desarrollar</h2>
+            <ul class="slide-content">
                 <li><strong>Asesoramiento Proactivo:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li>Guiar a docentes en normativas (Ord. 492, CCTD).</li>
                         <li>Interpretar derechos y obligaciones.</li>
                     </ul>
                 </li>
                 <li><strong>Onboarding (Inducción):</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li>Acompañar a docentes ingresantes en el entendimiento de los servicios.</li>
                     </ul>
                 </li>
                 <li><strong>Mejora Continua:</strong>
-                    <ul class="list-circle list-inside ml-8 mt-2 space-y-2 text-lg md:text-xl text-gray-700">
+                    <ul>
                         <li>Propiciar la revisión de normativas y auspiciar ámbitos para su modificación.</li>
                     </ul>
                 </li>
@@ -198,30 +368,30 @@
         </div>
 
         <!-- Diapositiva 12: Cierre -->
-        <div class="slide absolute inset-0 p-12 flex flex-col justify-center items-center text-center hidden">
-            <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-8">Preguntas y Contacto</h2>
-            <p class="text-2xl md:text-3xl text-gray-600">Muchas gracias.</p>
+        <div class="slide slide-centered hidden">
+            <h2 class="slide-closer">Preguntas y Contacto</h2>
+            <p class="slide-closer-text">Muchas gracias.</p>
         </div>
 
     </div>
 
     <!-- Navegación -->
-    <div class="flex justify-between items-center w-full max-w-5xl mt-4">
+    <div class="navigation">
         <!-- Botón Anterior -->
-        <button id="prevBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+        <button id="prevBtn">
             Anterior
         </button>
         
         <!-- Contador de Diapositivas -->
-        <span id="slide-counter" class="text-gray-600 font-medium text-sm"></span>
+        <span id="slide-counter"></span>
         
         <!-- Botón Siguiente -->
-        <button id="nextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+        <button id="nextBtn">
             Siguiente
         </button>
     </div>
 
-    <!-- Lógica de JavaScript para la presentación -->
+    <!-- Lógica de JavaScript para la presentación (sin cambios) -->
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
@@ -237,7 +407,11 @@
 
             // Ocultar todas las diapositivas
             slides.forEach((slide, index) => {
-                slide.classList.toggle('hidden', index !== currentSlide);
+                if (index === currentSlide) {
+                    slide.classList.remove('hidden');
+                } else {
+                    slide.classList.add('hidden');
+                }
             });
 
             // Actualizar el contador
